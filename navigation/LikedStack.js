@@ -6,6 +6,7 @@ const Stack = createStackNavigator();
 
 //screens
 import LikeScreen from '../screens/LikeScreen';
+import PreviewMeal from '../screens/PreviewMeal';
 
 
 const LikedScreenNavigator = () => {
@@ -16,6 +17,7 @@ const LikedScreenNavigator = () => {
         screenOptions={TransitionPresets.SlideFromRightIOS}
     >
         <Stack.Screen name="LikeScreen" component={LikeScreen} options={{headerShown: false}}/>
+        <Stack.Screen name="PreviewMeal" component={PreviewMeal} options={{headerShown: false}}/>
     </Stack.Navigator>
     );
 }

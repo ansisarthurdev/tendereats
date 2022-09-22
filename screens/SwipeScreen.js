@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/native'
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, TouchableOpacity } from 'react-native'
-import { vh } from 'react-native-expo-viewport-units'
+import { vh, vw } from 'react-native-expo-viewport-units'
+import { useIsFocused } from '@react-navigation/native';
 
 //components
 import Top from '../components/Top'
@@ -17,13 +18,17 @@ import { Ionicons, AntDesign } from '@expo/vector-icons'
 
 const SwipeScreen = () => {
 
-
     //getting data
     const [randomMeals, setRandomMeals] = useState([]);
     const [randomMealIndex, setRandomMealIndex] = useState(0);
     const [loading, setLoading] = useState();
     const [cleared, setCleared] = useState(false);
-    const [direction, setDirection] = useState(null);
+
+    const isFocused = useIsFocused();
+    let direction = null;
+
+    //liked meals
+    const [likedMeals, setLikedMeals] = useState([]);
 
     //already swiped meals
     let swipedMeals = [];
@@ -35,7 +40,7 @@ const SwipeScreen = () => {
         fetch('https://www.themealdb.com/api/json/v1/1/random.php')
         .then(response => response.json())
         .then(data => {
-            const meal = Object.fromEntries(Object.entries(data.meals[0]).filter(([_, v]) => v != null || ''));
+            const meal = Object.fromEntries(Object.entries(data.meals[0]).filter(([_, v]) => v != null || ""));
             //check if the meal isn't already on the list
             const mealCheck = randomMeals.findIndex(obj => obj?.idMeal === meal?.idMeal) !== -1;
 
@@ -49,19 +54,31 @@ const SwipeScreen = () => {
         })
     }
 
+    //get data from storage
+    const getDataFromStorage = () => {
+        AsyncStorage.getItem('likedMeals')
+        .then(res => res !== null ? setLikedMeals(JSON.parse(res)) : setLikedMeals([]))
+    }
+
     //card swiping --start
-    const onSwipe = (direction) => {
-    console.log('You swiped: ' + direction)
-    setDirection(direction);
+    const onSwipe = (cardDirection) => {
+    console.log('You swiped: ' + cardDirection)
+    direction = cardDirection;
     }
     
     const onCardLeftScreen = (meal) => {
-        const mealObj = JSON.parse(meal);
-        swipedMeals.push(mealObj);
+        swipedMeals.push(meal);
+
         if(direction === 'right'){
-            console.log('save item...');
+            let likedMealsLocal = likedMeals;
+            likedMealsLocal.unshift(meal);
+
+            const jsonStorageMeals = JSON.stringify(likedMealsLocal); //swap json to string
+            AsyncStorage.setItem('likedMeals', jsonStorageMeals); // update db
+
+            direction = null; //reset direction
         }
-        //console.log(`swiped: ${swipedMeals?.length} generated: ${randomMeals?.length}`)
+
         swipedMeals?.length === randomMeals?.length && setCleared(true);
     }
     //card swiping --end
@@ -72,8 +89,6 @@ const SwipeScreen = () => {
         setLoading(true); // load state
         setRandomMeals([]); //clear the generated list
         swipedMeals = []; //clear the swiped list
-
-
         for(let i = 0; i < startItemsCount; i++){
             fetchData();
         }
@@ -91,18 +106,19 @@ const SwipeScreen = () => {
         //get random items on first load
         if(randomMeals?.length === 0){
             getRandomMeals();
+            getDataFromStorage();
         }
-    }, [])
+    }, [isFocused])
 
   return (
     <Container>
-        <StatusBar translucent={true} backgroundColor={'transparent'}/>
+        <StatusBar translucent={true} backgroundColor={'transparent'} style="dark" />
         <Top />
 
         <TopBox>
-            <HeadingText>Browse</HeadingText>
+            <HeadingText style={{fontSize: vw(6)}}>Browse</HeadingText>
             <TouchableOpacity onPress={() => getRandomMeals()}>
-            <Ionicons name="reload" size={32} color="#0EAC6E" />
+            <Ionicons name="reload" size={28} color="#0EAC6E" />
             </TouchableOpacity>
         </TopBox>
 
@@ -117,12 +133,12 @@ const SwipeScreen = () => {
         </AnimationContainerCentered>
         : 
         <>{randomMeals.map(item => (
-        <TinderCard key={item?.idMeal} onSwipe={onSwipe} onCardLeftScreen={() => onCardLeftScreen(JSON.stringify(item))} preventSwipe={['up', 'down']}>
+        <TinderCard key={item?.idMeal} onSwipe={onSwipe} onCardLeftScreen={() => onCardLeftScreen(item)} preventSwipe={['up', 'down']}>
             <SwipeCard style={[styles.swipeCard, {height: vh(70)}]}>
                 <MealImage source={{uri: item?.strMealThumb}} /> 
                 <WrapCenter>
                 <Buttons>
-                    <TouchableOpacity onPress={() => console.log('hi')}>
+                    <TouchableOpacity>
                         <LikeBtn style={styles.btn} >
                             <Ionicons name="heart-dislike" size={28} color="rgb(233,9,78)" />
                         </LikeBtn>
@@ -155,7 +171,7 @@ const SwipeScreen = () => {
 
 const styles = StyleSheet.create({
     swipeCard: {
-      elevation: 3,
+        elevation: 2,
     },
     btn: {
         elevation: 10
@@ -191,13 +207,12 @@ align-items: center;
 `
 
 const HeadingText = styled.Text`
-font-size: 35px;
 font-weight: bold;
 `
 
 const CenterCardContainer = styled.View`
 display: flex;
-width: 80%;
+width: 85%;
 margin: 0 auto;
 align-items: center;
 justify-content: center;
@@ -205,7 +220,7 @@ justify-content: center;
 
 const CardContainer = styled.View`
 width: 100%;
-max-width: 480px;
+max-width: 550px;
 height: 700px;
 `
 
@@ -232,7 +247,7 @@ border-radius: 50px;
 const Buttons = styled.View`
 display: flex;
 flex-direction: row;
-width: 40%;
+width: 70%;
 justify-content: space-between;
 align-items: center;
 z-index: 100;
@@ -250,8 +265,7 @@ border-radius: 20px;
 position: absolute;
 background-color: #fff;
 width: 100%;
-max-width: 480px;
-
+max-width: 550px;
 `
 
 const Text = styled.Text``

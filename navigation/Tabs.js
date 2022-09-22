@@ -26,7 +26,7 @@ const Tabs = () => {
             tabBarStyle: { 
                 backgroundColor: 'white',
                 borderRadius: 50,
-                height: 70,
+                height: 60,
                 position: 'absolute',
                 bottom: 0,
                 borderBottomLeftRadius: 0,
@@ -42,7 +42,7 @@ const Tabs = () => {
                 tabBarIcon: ({focused}) => (
                     <Container>
                         {focused && <TopNav />}
-                        {focused ? <Ionicons name="compass" size={32} color="#0EAC6E" /> : <Ionicons name="compass-outline" size={32} color="gray" />}
+                        {focused ? <Ionicons name="compass" size={28} color="#0EAC6E" /> : <Ionicons name="compass-outline" size={28} color="gray" />}
                     </Container>
                 ),
                 headerShown: false,
@@ -56,7 +56,7 @@ const Tabs = () => {
                 tabBarIcon: ({focused}) => (
                     <Container>
                         {focused && <TopNav />}
-                        {focused ? <Ionicons name="bookmark" size={32} color="#0EAC6E" /> : <Ionicons name="bookmark-outline" size={32} color="gray" />}
+                        {focused ? <Ionicons name="bookmark" size={28} color="#0EAC6E" /> : <Ionicons name="bookmark-outline" size={28} color="gray" />}
                     </Container>
                 ),
                 headerShown: false
@@ -70,7 +70,7 @@ const Tabs = () => {
                 tabBarIcon: ({focused}) => (
                     <Container>
                         {focused && <TopNav />}
-                        {focused ? <Ionicons name="information-circle" size={32} color="#0EAC6E" /> : <Ionicons name="information-circle-outline" size={32} color="gray" />}
+                        {focused ? <Ionicons name="information-circle" size={28} color="#0EAC6E" /> : <Ionicons name="information-circle-outline" size={28} color="gray" />}
                     </Container>
                 ),
                 headerShown: false
