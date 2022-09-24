@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/native'
 import { TouchableOpacity } from 'react-native'
-import { vw } from 'react-native-expo-viewport-units'
+import { vw, vh } from 'react-native-expo-viewport-units'
 import { useIsFocused } from '@react-navigation/native';
 import LottieView from 'lottie-react-native'
+import { FontAwesome } from '@expo/vector-icons';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/core'
+import debounce from 'lodash.debounce';
 
 //components
 import Top from '../components/Top'
@@ -21,15 +23,24 @@ const LikeScreen = () => {
   const [likedMeals, setLikedMeals] = useState([]);
   const dispatch = useDispatch();
 
+  const [searchTxt, setSearchTxt] = useState('');
+  const [likedMealsFiltered, setLikedMealsFiltered] = useState([]);
+
   const loadData = () => {
     AsyncStorage.getItem('likedMeals')
     .then(res => res !== null ? setLikedMeals(JSON.parse(res)) : setLikedMeals([]))
   };
-
+  
   useEffect(() => {
     loadData(); //load data from storage
     //AsyncStorage.clear();
   }, [isFocused])
+
+  useEffect(() => {
+    //filter by searchtxt
+    const filtered = likedMeals.filter(meal => meal?.strMeal?.startsWith(searchTxt));
+    setLikedMealsFiltered(filtered);
+  }, [searchTxt])
 
   return (
     <Container>
@@ -46,25 +57,66 @@ const LikeScreen = () => {
         </> 
         : <>
         <TopBox><HeadingText style={{fontSize: vw(4)}}>Liked meals ({likedMeals?.length})</HeadingText></TopBox>
+        
+        <SearchBox>
+          <FontAwesome name="search" size={24} color="white" style={{position: 'absolute', top: 10, left: 10}}/>
+          <SearchBar defaultValue={searchTxt} onChangeText ={value => setSearchTxt(value)} placeholder="Search meal" placeholderTextColor="white"/>
+        </SearchBox>
 
+        {searchTxt ?<>
         <MealItems>
-            {likedMeals.map(meal => (
-              <TouchableOpacity style={{width: vw(90)}} key={meal?.idMeal} onPress={() => {navigation.navigate('PreviewMeal'); dispatch(setPreview(meal));}}>
-              <MealItem>
-                <MealImage source={{uri: meal?.strMealThumb}}/>
-                <MealInformation>
-                  <MealName>{meal?.strMeal}</MealName>
-                  <MealCategory>{meal?.strCategory}</MealCategory>
-                </MealInformation>
-              </MealItem>
-              </TouchableOpacity>
-            ))}
-            <EmptySpace />
+        {likedMealsFiltered.map(meal => (
+          <TouchableOpacity style={{width: vw(90)}} key={meal?.idMeal} onPress={() => {navigation.navigate('PreviewMeal'); dispatch(setPreview(meal));}}>
+          <MealItem>
+            <MealImage source={{uri: meal?.strMealThumb}}/>
+            <MealInformation>
+              <MealName>{meal?.strMeal}</MealName>
+              <MealCategory>{meal?.strCategory}</MealCategory>
+            </MealInformation>
+          </MealItem>
+          </TouchableOpacity>
+        ))}
+        <EmptySpace style={{height: vh(35)}}/>
+        </MealItems></>
+        : <>
+        <MealItems>
+          {likedMeals.map(meal => (
+            <TouchableOpacity style={{width: vw(90)}} key={meal?.idMeal} onPress={() => {navigation.navigate('PreviewMeal'); dispatch(setPreview(meal));}}>
+            <MealItem>
+              <MealImage source={{uri: meal?.strMealThumb}}/>
+              <MealInformation>
+                <MealName>{meal?.strMeal}</MealName>
+                <MealCategory>{meal?.strCategory}</MealCategory>
+              </MealInformation>
+            </MealItem>
+            </TouchableOpacity>
+          ))}
+          <EmptySpace style={{height: vh(35)}}/>
         </MealItems>
+        </>}
+        
+        
+
         </>}
     </Container>
   )
 }
+
+const Text = styled.Text``
+
+const SearchBox = styled.View`
+background: #0EAC6E;
+width: 90%;
+margin: 0 auto 20px;
+position: relative;
+padding: 10px 20px 10px 50px;
+`
+
+const SearchBar = styled.TextInput`
+font-size: 18px;
+color: white;
+
+`
 
 const AnimationText = styled.Text`
 font-size: 22px;
@@ -88,7 +140,6 @@ align-items: center;
 
 const EmptySpace = styled.View`
 width: 100%;
-height: 250px;
 `
 
 const MealCategory = styled.Text`

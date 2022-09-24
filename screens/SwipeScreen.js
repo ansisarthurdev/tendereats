@@ -59,7 +59,6 @@ const SwipeScreen = () => {
     const getDataFromStorage = () => {
         AsyncStorage.getItem('likedMeals')
         .then(res => res !== null ? setLikedMeals(JSON.parse(res)) : setLikedMeals([]))
-        console.log('getting data')
     }
 
     //card swiping --start
