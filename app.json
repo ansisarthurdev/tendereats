@@ -9,7 +9,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#F5F7F9"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -18,13 +18,17 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ansisarthurdev.tendereats",
+      "buildNumber": "1.0.0"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
+        "backgroundColor": "#F5F7F9"
+      },
+      "package": "com.ansisarthurdev.tendereats",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"

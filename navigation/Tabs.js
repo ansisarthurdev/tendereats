@@ -62,20 +62,6 @@ const Tabs = () => {
                 headerShown: false
             }}
         />
-
-        <Tab.Screen 
-            name="Info" 
-            component={SwipeScreen} 
-            options={{
-                tabBarIcon: ({focused}) => (
-                    <Container>
-                        {focused && <TopNav />}
-                        {focused ? <Ionicons name="information-circle" size={28} color="#0EAC6E" /> : <Ionicons name="information-circle-outline" size={28} color="gray" />}
-                    </Container>
-                ),
-                headerShown: false
-            }}
-        />
     </Tab.Navigator>
   );
 }

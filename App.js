@@ -8,6 +8,7 @@ import { store } from './app/store';
 
 export default function App() {
   return (
+
     <Provider store={store}>
       <NavigationContainer>
         <Tabs />

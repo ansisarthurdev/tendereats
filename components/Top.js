@@ -23,6 +23,7 @@ margin: 0 auto;
 const Container = styled.View`
 margin-top: ${StatusBar.currentHeight}px;
 padding-top: 20px;
+background: #F5F7F9;
 `
 
 export default Top

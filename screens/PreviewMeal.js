@@ -21,7 +21,7 @@ const PreviewMeal = () => {
     const isFocused = useIsFocused();
 
     const meal = useSelector(selectPreview);
-    console.log(meal);
+    //console.log(meal);
     const [tags, setTags] = useState([]);
     const [ingredients, setIngredients] = useState([]);
     const [measure, setMeasure] = useState([]);
@@ -72,27 +72,27 @@ const PreviewMeal = () => {
         <MealInformation style={{height: vh(75)}}>
             <Text style={{fontSize: 26, fontWeight: 'bold', marginTop: 20}}>{meal?.strMeal}</Text>
             <MealCategory>
-                <Text style={{fontSize: 20, color: 'gray', marginRight: 10}}>{meal?.strArea},</Text>
-                <Text style={{fontSize: 20, color: 'gray'}}>{meal?.strCategory}</Text>
+                <Text style={{fontSize: 16, color: 'gray', marginRight: 10}}>{meal?.strArea},</Text>
+                <Text style={{fontSize: 16, color: 'gray'}}>{meal?.strCategory}</Text>
             </MealCategory>
 
             <MealTags>
                 {tags && tags?.map(tag => <MealTag key={tag}>{tag}</MealTag>)}
             </MealTags>
 
-            <Text style={{fontSize: 20, marginTop: 20, marginBottom: 10}}>Ingredients & Measurements</Text>
+            <Text style={{fontSize: 20, marginTop: 20, marginBottom: 10, fontWeight: 'bold'}}>Ingredients & Measurements</Text>
             <MealIngredients>
                 <Ingredients>
-                    {ingredients?.map(ing => <Text key={ing} style={{fontSize: 20}}>{ing}</Text>)}
+                    {ingredients?.map(ing => <Text key={ing} style={{fontSize: 18}}>{ing}</Text>)}
                 </Ingredients>
 
                 <Measure>
-                    {measure?.map(mea => <Text key={mea} style={{fontSize: 20}}>{mea}</Text>)}
+                    {measure?.map(mea => <Text key={mea} style={{fontSize: 18}}>{mea}</Text>)}
                 </Measure>
             </MealIngredients>
 
             <MealInstructions>
-                <Text style={{fontSize: 20, marginBottom: 10}}>Instructions</Text>
+                <Text style={{fontSize: 20, marginBottom: 10, fontWeight: 'bold'}}>Instructions</Text>
                 <Text style={{fontSize: 18}}>{meal?.strInstructions}</Text>     
             </MealInstructions>
             

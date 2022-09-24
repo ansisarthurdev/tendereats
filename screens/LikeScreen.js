@@ -8,7 +8,6 @@ import { FontAwesome } from '@expo/vector-icons';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/core'
-import debounce from 'lodash.debounce';
 
 //components
 import Top from '../components/Top'
@@ -60,7 +59,7 @@ const LikeScreen = () => {
         
         <SearchBox>
           <FontAwesome name="search" size={24} color="white" style={{position: 'absolute', top: 10, left: 10}}/>
-          <SearchBar defaultValue={searchTxt} onChangeText ={value => setSearchTxt(value)} placeholder="Search meal" placeholderTextColor="white"/>
+          <SearchBar defaultValue={searchTxt} onChangeText={value => setSearchTxt(value)} placeholder="Search meal" placeholderTextColor="white"/>
         </SearchBox>
 
         {searchTxt ?<>
@@ -119,7 +118,7 @@ color: white;
 `
 
 const AnimationText = styled.Text`
-font-size: 22px;
+font-size: 18px;
 text-align: center;
 margin-top: 20px;
 `
@@ -144,13 +143,15 @@ width: 100%;
 
 const MealCategory = styled.Text`
 color: white;
-font-size: 20px;
+font-size: 18px;
+opacity: .7;
 `
 
 const MealName = styled.Text`
 color: white;
-font-size: 20px;
+font-size: 18px;
 max-width: 80%;
+font-weight: bold;
 `
 
 const MealInformation = styled.View`
@@ -158,7 +159,7 @@ position: absolute;
 flex-direction: row;
 justify-content: space-between;
 align-items: center;
-background: #0EAC6E;
+background: #0eac6ea1;
 width: 100%;
 padding: 5px 10px;
 bottom: 0;

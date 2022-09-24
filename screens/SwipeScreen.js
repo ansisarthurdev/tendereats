@@ -63,7 +63,7 @@ const SwipeScreen = () => {
 
     //card swiping --start
     const onSwipe = (cardDirection) => {
-    console.log('You swiped: ' + cardDirection)
+    //console.log('You swiped: ' + cardDirection)
     direction = cardDirection;
     }
     
@@ -86,10 +86,6 @@ const SwipeScreen = () => {
 
     //get data when opening screen 
     const getRandomMeals = () => {
-        setCleared(false);
-        setLoading(true); // load state
-        setRandomMeals([]); //clear the generated list
-        swipedMeals = []; //clear the swiped list
         for(let i = 0; i < startItemsCount; i++){
             fetchData();
         }
@@ -104,11 +100,12 @@ const SwipeScreen = () => {
     }, [randomMealIndex])
 
     useEffect(() => {
+        setCleared(false);
+        setLoading(true); // load state
+        setRandomMeals([]); //clear the generated list
+        swipedMeals = []; //clear the swiped list
         //get random items on first load
-
-            getRandomMeals();
-
-
+        getRandomMeals();
         getDataFromStorage();
     }, [isFocused])
 
@@ -181,7 +178,7 @@ const styles = StyleSheet.create({
   })
 
 const AnimationText = styled.Text`
-font-size: 22px;
+font-size: 18px;
 text-align: center;
 margin-top: 20px;
 `
@@ -194,8 +191,8 @@ align-items: center;
 `
 
 const AnimationContainer = styled.View`
-width: 250px;
-height: 250px;
+width: 180px;
+height: 180px;
 justify-content: center;
 align-items: center;
 ` 
