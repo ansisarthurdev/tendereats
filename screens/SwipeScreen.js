@@ -40,10 +40,11 @@ const SwipeScreen = () => {
         fetch('https://www.themealdb.com/api/json/v1/1/random.php')
         .then(response => response.json())
         .then(data => {
-            const meal = Object.fromEntries(Object.entries(data.meals[0]).filter(([_, v]) => v != null || ""));
+            const meal = Object.fromEntries(Object.entries(data.meals[0]).filter(([_, v]) => v != null && v?.length != 0 && v != " "));
+            //console.log(meal)
             //check if the meal isn't already on the list
             const mealCheck = randomMeals.findIndex(obj => obj?.idMeal === meal?.idMeal) !== -1;
-
+            
             //add index to generated items to check if its finished
             setRandomMealIndex(prev => prev + 1);
 
@@ -58,6 +59,7 @@ const SwipeScreen = () => {
     const getDataFromStorage = () => {
         AsyncStorage.getItem('likedMeals')
         .then(res => res !== null ? setLikedMeals(JSON.parse(res)) : setLikedMeals([]))
+        console.log('getting data')
     }
 
     //card swiping --start
@@ -104,10 +106,11 @@ const SwipeScreen = () => {
 
     useEffect(() => {
         //get random items on first load
-        if(randomMeals?.length === 0){
+
             getRandomMeals();
-            getDataFromStorage();
-        }
+
+
+        getDataFromStorage();
     }, [isFocused])
 
   return (

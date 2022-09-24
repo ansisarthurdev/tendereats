@@ -16,6 +16,7 @@
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/stack": "^6.3.1",
     "@react-spring/native": "^9.5.4",
+    "@reduxjs/toolkit": "^1.8.5",
     "expo": "~46.0.9",
     "expo-status-bar": "~1.4.0",
     "lottie-ios": "^3.4.0",
@@ -25,6 +26,9 @@
     "react-native-expo-viewport-units": "^0.0.8",
     "react-native-gesture-handler": "^2.6.1",
     "react-native-web": "~0.18.7",
+    "react-native-youtube": "^2.0.2",
+    "react-native-youtube-iframe": "^2.2.2",
+    "react-redux": "^8.0.4",
     "react-tinder-card": "^1.5.4",
     "styled-components": "^5.3.5"
   },
